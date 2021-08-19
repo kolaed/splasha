@@ -1,0 +1,91 @@
+{
+  "project_info": {
+    "project_number": "447640993812",
+    "firebase_url": "https://splasha-808c9.firebaseio.com",
+    "project_id": "splasha-808c9",
+    "storage_bucket": "splasha-808c9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447640993812:android:57f9f165db85b06f66e701",
+        "android_client_info": {
+          "package_name": "thabokola.splasha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447640993812-9do64tdu0j2hjfl2jqnhigi2tvqlrtgd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy21L5y4TcZrTF1V8c5jTtdCq4no0Mf8c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447640993812-9do64tdu0j2hjfl2jqnhigi2tvqlrtgd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "447640993812-23k56mcpa3ifhg4rr3ode3fb6ojk7081.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "thabokola.spotlessFlutterApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447640993812:android:14e27d6279efeab066e701",
+        "android_client_info": {
+          "package_name": "thabokola.spotless_flutter_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447640993812-cbcm8qagnossqv3pnmpjumq01qrq2ekn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "thabokola.spotless_flutter_app",
+            "certificate_hash": "f05f79a443f2275ebe2dc3ca12eb2011d0e8d7b1"
+          }
+        },
+        {
+          "client_id": "447640993812-9do64tdu0j2hjfl2jqnhigi2tvqlrtgd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCy21L5y4TcZrTF1V8c5jTtdCq4no0Mf8c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "447640993812-9do64tdu0j2hjfl2jqnhigi2tvqlrtgd.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "447640993812-23k56mcpa3ifhg4rr3ode3fb6ojk7081.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "thabokola.spotlessFlutterApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
