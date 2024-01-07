@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:splasha/screens/address_look_up.dart';
 import 'package:splasha/screens/checkoutmethodcard.dart';
 import 'package:splasha/screens/favourites_page.dart';
-import 'package:splasha/screens/home_page.dart';
+
 import 'package:splasha/screens/login_screen.dart';
 import 'package:splasha/screens/product_selection_screen.dart';
 import 'package:splasha/screens/registration_screen.dart';
@@ -66,6 +66,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider<SelectedPrice>(
           create: (context) => SelectedPrice(),
         ),
+        ChangeNotifierProvider<SelectedVehicleMake>(
+          create: (context) => SelectedVehicleMake(),
+        ),
+        ChangeNotifierProvider<SelectedVehicleModel>(
+          create: (context) => SelectedVehicleModel(),
+        ),
+        ChangeNotifierProvider<SelectedVehicleReg>(
+          create: (context) => SelectedVehicleReg(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -81,7 +90,7 @@ class MyApp extends StatelessWidget {
           'checkout_screen': (context) => CheckoutScreen(),
           LoginScreen.id: (context) => LoginScreen(),
           RegistrationScreen.id: (context) => RegistrationScreen(),
-          'address_screen': (context) => AddressScreen(),
+          'address_screen': (context) => AddressLookUPScreen(),
           WelcomeScreen.id: (context) => WelcomeScreen(),
           'checkoutMethodCard': (context) => CheckoutMethodCard(),
           'sorry_screen': (context) => SorryScreen(),

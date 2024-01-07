@@ -200,7 +200,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 Route _createRoute() {
   return PageRouteBuilder(
-      pageBuilder: (context, animation, secondaryAnimation) => AddressScreen(),
+      pageBuilder: (context, animation, secondaryAnimation) => AddressLookUPScreen(),
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
         var begin = Offset(1.0, 0.0);
         var end = Offset.zero;

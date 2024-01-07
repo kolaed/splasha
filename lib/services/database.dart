@@ -23,6 +23,12 @@ class DatabaseService {
   final CollectionReference services =
   FirebaseFirestore.instance.collection('services');
 
+  final CollectionReference addresses =
+  FirebaseFirestore.instance.collection('addresses');
+
+  final CollectionReference laundry =
+  FirebaseFirestore.instance.collection('laundry');
+
   DatabaseService({this.uid});
 
   Future updateMyUserData(
@@ -39,7 +45,7 @@ class DatabaseService {
     return snapshot.docs.map((doc) {
       return MyUser(
         uid: uid,
-        name: doc['name'] ?? '',
+        name: doc['name'] ?? 'No User',
         contactNumber: doc['contactNumber'] ?? 0,
         email: doc['email'] ?? '',
       );

@@ -4,13 +4,18 @@ import 'package:flutter_paystack/flutter_paystack.dart';
 import 'package:splasha/models/category_info.dart';
 import 'package:provider/provider.dart';
 import 'package:splasha/screens/address_look_up.dart';
+import 'package:splasha/screens/addresses_screen.dart';
 import 'package:splasha/screens/bookings_history_screen.dart';
 import 'package:splasha/screens/favourites_page.dart';
+import 'package:splasha/services/paystack_service.dart';
 import 'package:splasha/utils/hexToColor.dart';
+import 'package:splasha/widgets/addresses_Stream.dart';
 import 'dart:io';
 import 'booking_screen.dart';
 import 'package:splasha/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+
 
 class CheckoutScreen extends StatefulWidget {
   @override
@@ -28,6 +33,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     plugin.initialize(publicKey: publicKey);
     super.initState();
   }
+
+
 
   Dialog successDialog(context) {
     return Dialog(
@@ -151,7 +158,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ..amount = amount
       ..currency = 'ZAR'
       ..reference = _getReference()
-      // or ..accessCode = _getAccessCodeFrmInitialization()
+    // or ..accessCode = _getAccessCodeFrmInitialization()
       ..email = 'thbkola@gmail.com';
     CheckoutResponse response = await plugin.checkout(context,
         method: CheckoutMethod.card, // Defaults to CheckoutMethod.selectable
@@ -160,10 +167,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     if (response.status == true) {
       setState(() {
         User user = _firebaseAuth.currentUser;
-        final CategoryInfo categoryInfo =
-            ModalRoute.of(context).settings.arguments;
         DatabaseService(uid: user.uid).addUserBookingData(
-
             Provider.of<SelectedWashType>(context, listen: false)
                 .selectedWashType,
             Provider.of<SelectedVehicleType>(context, listen: false)
@@ -188,112 +192,187 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
     }
   }
 
+
+
+
+
+
+
+  String answer;
+
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    final CategoryInfo categoryInfo = ModalRoute.of(context).settings.arguments;
 
     String price = Provider.of<SelectedPrice>(context).selectedPrice;
 
+    void _navigateAndDisplayAddresses(BuildContext context) async {
+      // Navigator.push returns a Future that completes after calling
+      // Navigator.pop on the Selection Screen.
+
+      final result = await showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return AddressesStream(
+                firebaseAuth: _firebaseAuth, height: height, width: width);
+          });
+
+      setState(() {
+        answer = result;
+      });
+
+    }
+
     return Scaffold(
+      bottomSheet:     Container(
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        width: width,
+        height: height / 8,
+        color: Colors.white,
+        child: Container(
+          color: Colors.blue,
+          child: Center(
+            child: InkWell(
+              onTap: () {
+               chargeCard(int.parse(price));
+              },
+              child: Text('CHECKOUT R${price.substring(0, 3)}',style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold),),
+            ),
+          ),
+        ),
+      ),
       backgroundColor: Colors.blueGrey.shade50,
       appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
         leading: InkWell(
           onTap: () {
             Navigator.pop(context);
           },
-          child: Container(color: Colors.red, child: Icon(Icons.arrow_back)),
+          child: Container(
+              child: Icon(
+            Icons.close,
+            color: Colors.black,
+            size: 30,
+          )),
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            SizedBox(
-              height: height / 4,
-            ),
-            Container(
-              width: double.infinity,
-              height: height / 2,
-              decoration: BoxDecoration(
-                color: Colors.white,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          width: double.infinity,
+          height: height ,
+          decoration: BoxDecoration(
+            color: Colors.white,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${Provider.of<SelectedWashType>(context).selectedWashType} ${Provider.of<SelectedVehicleType>(context).selectedVehicleType}',
+                style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        Provider.of<SelectedWashType>(context).selectedWashType,
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        Provider.of<SelectedVehicleType>(context)
-                            .selectedVehicleType,
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        Provider.of<SelectedDate>(context)
-                            .selectedDate
-                            .substring(0, 10),
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        '',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        Provider.of<SelectedTime>(context)
-                            .selectedTime
-                            .substring(10, 16),
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'TOTAL',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'R$price'.substring(0,4),
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  Text(
-                    'R$price'.substring(0,4),
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              ListTile(
+                leading: Icon(
+                  Icons.location_on,
+                  color: Colors.black,
+                ),
+                title: Text(
+                    answer == null ? 'ADD ADDRESS' : answer.toUpperCase()),
+                trailing: InkWell(
+                    onTap: () {
+                      _navigateAndDisplayAddresses(context);
+                    },
+                    child: Icon(
+                      Icons.add,
+                      color: Colors.black,
+                    )),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              width: width,
-              height: height / 8,
-              color: Colors.white,
-              child: Center(
-                child: InkWell(
-                  onTap: () {
-                    chargeCard(int.parse(price));
-                  },
-                  child: Text('CheckOut'),
+              Center(
+                child: SizedBox(
+                  height: 20,
+                  width: width / 2,
+                  child: Divider(
+                    color: Colors.blueGrey.shade200,
+                  ),
                 ),
               ),
-            ),
-          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Booking date:',
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                  Text(Provider.of<SelectedDate>(context).selectedDate.substring(0, 10))
+                ],
+              ),
+              Row(
+
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Booking time:',
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                  ),
+                  Text(Provider.of<SelectedTime>(context).selectedTime.substring(10, 16))
+                ],
+              ),
+              Center(
+                child: SizedBox(
+                  height: 20,
+                  width: width / 2,
+                  child: Divider(
+                    color: Colors.blueGrey.shade200,
+                  ),
+                ),
+              ),
+              Text(
+                'Vehicle Details',
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Make: ${Provider.of<SelectedVehicleMake>(context).selectedVehicleMake.toUpperCase() }',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Model: ${Provider.of<SelectedVehicleModel>(context).selectedVehicleModel.toUpperCase() }',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                'Registration: ${Provider.of<SelectedVehicleReg>(context).selectedVehicleReg.toUpperCase() }',
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,),
+              ),
+              Center(
+                child: SizedBox(
+                  height: 20,
+                  width: width / 2,
+                  child: Divider(
+                    color: Colors.blueGrey.shade200,
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'TOTAL',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                  Text(
+                    'R$price'.substring(0, 4),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+
+                ],
+              ),
+              SizedBox(
+                height:height / 4,
+              )
+            ],
+          ),
         ),
       ),
     );

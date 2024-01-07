@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:splasha/models/my_user.dart';
 
-class UserInfoList extends StatefulWidget {
-  @override
-  _UserInfoListState createState() => _UserInfoListState();
-}
+class UserInfoList extends StatelessWidget {
 
-class _UserInfoListState extends State<UserInfoList> {
   @override
   Widget build(BuildContext context) {
 

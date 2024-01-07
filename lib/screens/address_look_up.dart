@@ -16,12 +16,12 @@ import 'package:splasha/widgets/rounded_button.dart';
 import 'home_page.dart';
 import 'main_page.dart';
 
-class AddressScreen extends StatefulWidget {
+class AddressLookUPScreen extends StatefulWidget {
   @override
-  _AddressScreenState createState() => _AddressScreenState();
+  _AddressLookUPScreenState createState() => _AddressLookUPScreenState();
 }
 
-class _AddressScreenState extends State<AddressScreen> {
+class _AddressLookUPScreenState extends State<AddressLookUPScreen> {
   bool showSpinner = false;
 
   final _controller = TextEditingController();
@@ -30,7 +30,7 @@ class _AddressScreenState extends State<AddressScreen> {
   String _city = '';
   String _zipCode = '';
 
-  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseFirestore irestore = FirebaseFirestore.instance;
 
   int countOccurrencesUsingLoop(zipCodes, _zipCode) {
     List<String> zips = [];

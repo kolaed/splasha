@@ -17,18 +17,16 @@ class ServicesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          height: height / 4,
-          width: width / 2,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              fit: BoxFit.cover,
-              image:
-              NetworkImage(servicesData['image']),
-            ),
+      Container(
+        margin: const EdgeInsets.all(8.0),
+        height: height / 4,
+        width: width / 2,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          image: DecorationImage(
+            fit: BoxFit.cover,
+            image:
+            NetworkImage(servicesData['image']),
           ),
         ),
       ),

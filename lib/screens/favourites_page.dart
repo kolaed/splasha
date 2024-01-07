@@ -8,10 +8,29 @@ import 'package:splasha/services/database.dart';
 import 'booking_screen.dart';
 
 class FavouritesPage extends StatelessWidget {
+
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+
+    void _navigateAndDisplayBookingScreen(BuildContext context) async {
+      // Navigator.push returns a Future that completes after calling
+      // Navigator.pop on the Selection Screen.
+
+      final result = await showModalBottomSheet(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) {
+            return BookingScreen();
+          });
+
+      // setState(() {
+      //   answer = result;
+      // });
+
+    }
 
     return StreamBuilder<QuerySnapshot>(
         stream: DatabaseService(uid: '').carWash.snapshots(),
@@ -25,13 +44,14 @@ class FavouritesPage extends StatelessWidget {
           } else {
             return Scaffold(
               appBar: AppBar(
+                elevation: 0,
                 backgroundColor: Colors.white,
                 leading: IconButton(
                   color: Colors.black,
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.menu),
+                  icon: Icon(Icons.close),
                 ),
                 actions: [
                   IconButton(
@@ -50,146 +70,107 @@ class FavouritesPage extends StatelessWidget {
                   DocumentSnapshot carWashData =
                       carWashSnapshot.data.docs[index];
 
-                  return Column(
-                    children: [
-                      Container(
-                        height: height/2,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                          children: [
-                            Text(
-                              carWashData['washType'].toString().toUpperCase(),
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-
-                              children: [
-                                Text(carWashData['specifications']),
-                              ],
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(left: 10),
-                              decoration: BoxDecoration(
-                                  color: Colors.white,
-
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey.withOpacity(0.5),
-                                      spreadRadius: 1,
-                                      blurRadius: 7,
-                                      offset: Offset(0, 3),
-                                    ),
-                                  ]
-                              ),
-                              height: height/8,
-                              width: width,
-                              child:
-                                  InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => BookingScreen()),
-                                      );
-                                      Provider.of<SelectedWashType>(context,
-                                          listen: false)
-                                          .changeString(carWashData['washType']);
-                                      Provider.of<SelectedVehicleType>(context,
-                                          listen: false)
-                                          .changeString(carWashData['vehicleSedan']);
-                                      Provider.of<SelectedPrice>(context, listen: false)
-                                          .changeString(
-                                          carWashData['priceSedan'].toString());
-                                    },
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
-                                      children: [
-                                        Text(carWashData['vehicleSedan'],style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15
-                                        ),),
-                                        Text(
-                                            'R${carWashData['priceSedan'].toString().substring(0, 3)}'),
-
-                                      ],
-                                    ),
-                                  ),),
-                                  Container(
-                                    padding: EdgeInsets.only(left: 10,right: 10),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
-                                            spreadRadius: 1,
-                                            blurRadius: 7,
-                                            offset: Offset(0, 3),
-                                          ),
-                                        ]
-                                    ),
-                                    height: height/8,
-                                    width: width,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => BookingScreen()),
-                                            );
-                                            Provider.of<SelectedWashType>(context,
-                                                listen: false)
-                                                .changeString(carWashData['washType']);
-                                            Provider.of<SelectedVehicleType>(context,
-                                                listen: false)
-                                                .changeString(carWashData['vehicleSUV']);
-                                            Provider.of<SelectedPrice>(context, listen: false)
-                                                .changeString(
-                                                carWashData['priceSUV'].toString());
-                                          },
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: [
-                                              Text(carWashData['vehicleSUV'],style: TextStyle(
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15,
-                                              ),),
-                                              Text(
-                                                  'R${carWashData['priceSUV'].toString().substring(0, 3)}'),
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-
-                                            width: 70,
-                                            decoration: BoxDecoration(
-                                              image: DecorationImage(
-                                                image: NetworkImage(carWashData['image'])
-                                              ),
-
-                                            ),
-                                           ),
-                                      ],
-                                    ),
-                                  ),
-                          ],
+                  return Container(
+                    height: height/1.3,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: height/4,
                         ),
-                      ),
+                        Container(
+                          color: Colors.white,
+                          height: height/2,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                            children: [
+                              Text(
+                                carWashData['washType'].toString().toUpperCase(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+
+                                children: [
+                                  Text(carWashData['specifications']),
+                                ],
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  _navigateAndDisplayBookingScreen(context);
+                                  Provider.of<SelectedWashType>(context,
+                                      listen: false)
+                                      .changeString(carWashData['washType']);
+                                  Provider.of<SelectedVehicleType>(context,
+                                      listen: false)
+                                      .changeString(carWashData['vehicleSedan']);
+                                  Provider.of<SelectedPrice>(context, listen: false)
+                                      .changeString(
+                                      carWashData['priceSedan'].toString());
+                                },
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
+                                  children: [
+                                    Text(carWashData['vehicleSedan'],style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15
+                                    ),),
+                                    Text(
+                                        'R${carWashData['priceSedan'].toString().substring(0, 3)}'),
+
+                                  ],
+                                ),
+                              ),
+                                    InkWell(
+                                      onTap: () {
+                                        _navigateAndDisplayBookingScreen(context);
+
+                                        Provider.of<SelectedWashType>(context,
+                                            listen: false)
+                                            .changeString(carWashData['washType']);
+                                        Provider.of<SelectedVehicleType>(context,
+                                            listen: false)
+                                            .changeString(carWashData['vehicleSUV']);
+                                        Provider.of<SelectedPrice>(context, listen: false)
+                                            .changeString(
+                                            carWashData['priceSUV'].toString());
+                                      },
+                                      child: Row(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(carWashData['vehicleSUV'],style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                          ),),
+                                          Text(
+                                              'R${carWashData['priceSUV'].toString().substring(0, 3)}'),
+                                        ],
+                                      ),
+                                    ),
+                                    Container(
+
+                                        width: 70,
+                                        decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                            image: NetworkImage(carWashData['image'])
+                                          ),
+
+                                        ),
+                                       ),
+                            ],
+                          ),
+                        ),
 
 
-                    ],
+                      ],
+                    ),
                   );
                 },
               ),

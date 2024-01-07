@@ -206,7 +206,7 @@ class AccountInfoTile extends StatelessWidget {
           child: Divider(
             color: Colors.blueGrey.shade200,
           ),
-        )
+        ),
       ],
     );
   }

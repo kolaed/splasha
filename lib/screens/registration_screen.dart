@@ -26,6 +26,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   String email;
   String password;
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -114,7 +116,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => AddressScreen()),
+                                        builder: (context) => AddressLookUPScreen()),
                                   );
                                 }
                               } catch (e) {
